@@ -26,8 +26,7 @@ class Estados
     {
         $sql = "SELECT * FROM estados WHERE indice = '".$this->indice."'";
         $estados = $this->con->sqlReturn($sql);
-        $row = mysqli_fetch_assoc($estados);
-        $array["datos"] = $row;
+        $array = mysqli_fetch_assoc($estados);
         return $array;
     }
 

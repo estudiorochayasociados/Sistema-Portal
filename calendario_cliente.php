@@ -2,7 +2,7 @@
 require_once "Config/Autoload.php";
 Config\Autoload::runSitio();
 $funciones = new Clases\PublicFunction();
-if($_SESSION["usuario"] != 1){
+if ($_SESSION["usuario"] != 1) {
     $funciones->headerMove('index.php');
 }
 ?>
@@ -15,17 +15,41 @@ if($_SESSION["usuario"] != 1){
     <script src="assets/js/fullcalendar.min.js"></script>
     <script src="assets/js/es.js"></script>
 </head>
-<body>
-<div class="container mt-5 mb-5">
-    <div class="row">
+<body class="bkg ">
+<div class="container mt-5 mb-5 pt-20 pb-20" style="background:rgba(255,255,255,.9);border-radius: 20px">
+    <div class="row ">
         <!-- Mensaje de turno creado -->
-        <div id="turno" class="col-md-12 alert alert-info mt-3 text-center" style="display: none;">
-            <h4>¡Sacaste tu turno exitosamente!</h4>
-            <p>Podés consultar tu turno en todo momento con tu DNI</p>
-            <a href="index.php" class="btn btn-info">Consultar</a>
+        <div id="turno" class="col-md-12 mt-3 text-left" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="text-uppercase">¡Perfecto, ya tenés tu turno!</h4>
+                    <hr/>
+                </div>
+                <div class="col-md-3">
+                    <img src="assets/img/logo.png" width="100%"/>
+                </div>
+                <div class="col-md-9">
+                    <p>
+                        Ahora asistí a <b>Escribanía Bruno</b> (Av. del Libertador Sur 170), el día citado para comenzar tu proceso de escrituración. No te olvides de llevar la documentación según tu situación.
+                    <ul style="font-size:14px;">
+                        <li><b>¿SOS SOLTERO/A?:</b> DNI.</li>
+                        <li><b>¿SOS CASADO/A?:</b> DNI y nombre completo del cónyuge.</li>
+                        <li><b>¿SOS CASADO/A CON RÉGIMEN DE SEPARACIÓN DE BIENES?:</b> copia de escritura de opción de Régimen Patrimonial Matrimonial y copia de Partida de Matrimonio con nota marginal de opción del Régimen.</li>
+                        <li><b>¿SOS DIVORCIADO/A?:</b> DNI y copia de sentencia de divorcio.</li>
+                        <li><b>¿SOS VIUDO/A?:</b> DNI y nombre completo del cónyuge fallecido.</li>
+                        <li><b>¿COMPRÁS Y CONSTITUÍS USUFRUCTO?:</b> DNI comprador, DNI usufructuario.</li>
+                    </ul>
+                    </p>
+                    <a href="imprimir.php" target="_blank" class="btn btn-info">Imprimir turno</a><br/><br/><br/>
+                    <form>
+                    </form>
+                </div>
+            </div>
         </div>
         <!-- Calendario -->
         <div id="calendario" class="col-md-8">
+            <h4>Seleccioná el día de tu turno</h4>
+            <hr/>
             <div id="calendarioWeb"></div>
         </div>
         <!-- Card Agregar -->
@@ -37,21 +61,34 @@ if($_SESSION["usuario"] != 1){
                 <div class="card-body">
                     <input class="form-control" type="hidden" id="txtObservacion" name="txtObservacion" value="Sin observación">
                     <input class="form-control" type="hidden" id="txtEstado" name="txtEstado" value="1">
-                    <span>DNI:</span><br>
-                    <input class="form-control" type="text" id="txtDni" name="txtDni" disabled>
-                    <span>Titular/es:</span><br>
-                    <input class="form-control" type="text" id="txtTitulares" name="txtTitulares" disabled>
-                    <span>Manzana:</span><br>
-                    <input class="form-control" type="text" id="txtManzana" name="txtManzana" disabled>
-                    <span>Lote:</span><br>
-                    <input class="form-control" type="text" id="txtLote" name="txtLote" disabled>
-                    <span>Horario:</span><br>
-                    <div class="seccionStart"></div>
-                    <div class="seccionEnd"></div>
+                    <b>DNI:</b><br>
+                    <input style="margin-bottom: 10px" class="form-control" type="text" id="txtDni" name="txtDni" disabled>
+                    <b>Titular/es:</b><br>
+                    <input style="margin-bottom: 10px" class="form-control" type="text" id="txtTitulares" name="txtTitulares" disabled>
+                    <b>Manzana:</b><br>
+                    <input style="margin-bottom: 10px" class="form-control" type="text" id="txtManzana" name="txtManzana" disabled>
+                    <b>Lote/s:</b><br>
+                    <input style="margin-bottom: 10px" class="form-control" type="text" id="txtLote" name="txtLote" disabled>
+                    <b>Horario del turno:</b><br>
+                    <div class="row">
+                        <div class="clearfix"></div>
+                        <div class="col-md-6" id="seccionStart">
+                            <span style="font-size: 14px">desde:</span><br>
+                            <select class="form-control" id="txtStart" name="txtStart">
+                                <option selected disabled>Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="seccionEnd">
+                            <span style="font-size: 14px">hasta:</span><br>
+                            <select disabled class="form-control" id="txtEnd" name="txtEnd">
+                            </select>
+                        </div>
+                    </div>
+                    <i style="color:#ffab44;font-size: 12px">* los turnos son de 30 minutos</i>
                     <div id="confirmar"></div>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" id="btnAgregar">Sacar Turno</button>
+                    <button type="button" class="btn btn-block btn-success" data-dismiss="modal" id="btnAgregar">¡SOLICITAR TURNO!</button>
                 </div>
             </div>
         </div>
@@ -68,9 +105,10 @@ if($_SESSION["usuario"] != 1){
         </div>
     </div>
     <div class="row">
-        <div class="clearfix"></div><br>
-        <div class="col-md-12">
-            <br><a href="index.php" class="btn btn-info col-sm-12 col-md-2">Cerrar Sesión</a>
+        <div class="clearfix"></div>
+        <br>
+        <div class="col-md-12" id="logout">
+            <br><a href="clientes.php" class="btn btn-info col-sm-12 col-md-2">Cerrar Sesión</a>
         </div>
     </div>
 </div>

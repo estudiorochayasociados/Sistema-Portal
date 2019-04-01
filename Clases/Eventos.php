@@ -83,4 +83,46 @@ class Eventos
         return $array;
     }
 
+    public function leerTramites()
+    {
+        $array = array();
+        $sql = "SELECT tramite FROM eventos WHERE usuario = ".$this->usuario;
+        $eventos = $this->con->sqlReturn($sql);
+        while ($row = mysqli_fetch_assoc($eventos)) {
+            $array[] = $row;
+        }
+        return $array;
+    }
+
+    public function obtenerLotes()
+    {
+        $array = array();
+        $r = false;
+        $sql = "SELECT lote FROM eventos WHERE usuario = ".$this->usuario;
+        $eventos = $this->con->sqlReturn($sql);
+
+        if ($eventos->num_rows > 0) {
+            while($row = mysqli_fetch_assoc($eventos)){
+                $array[] = $row;
+            }
+            $r = $array;
+        }
+
+        return $r;
+    }
+
+    public function recordatorios()
+    {
+        $array = array();
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $fechaActual = strftime("%Y-%m-%d %H:%M:00");
+        $sql = "SELECT *, DATEDIFF('$fechaActual', start) as diferencia FROM eventos HAVING diferencia = -1";
+
+        $eventos = $this->con->sqlReturn($sql);
+        while ($row = mysqli_fetch_assoc($eventos)) {
+            $array[] = $row;
+        }
+        return $array;
+    }
+
 }

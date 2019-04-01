@@ -44,7 +44,7 @@ class Acceso
         if ($cliente->num_rows > 0) {
             $r = true;
             $array = array();
-            $sql2 = "SELECT * FROM `eventos` WHERE `usuario` LIKE '%{$this->dni}%'";
+            $sql2 = "SELECT * FROM `eventos` WHERE `usuario` LIKE '%{$this->dni}%' ORDER BY tramite";
             $acceso = $this->con->sqlReturn($sql2);
 
             if ($acceso->num_rows > 0) {
@@ -54,20 +54,6 @@ class Acceso
                 $r = $array;
             }
         }
-        return $r;
-    }
-
-    public function asociarDatos()
-    {
-        $r = false;
-        $sql = "SELECT * FROM `clientes` WHERE `dni` LIKE '%{$this->dni}%'";
-        $cliente = $this->con->sqlReturn($sql);
-
-        if ($cliente->num_rows > 0) {
-            $array = mysqli_fetch_assoc($cliente);
-            $r = $array;
-        }
-
         return $r;
     }
 

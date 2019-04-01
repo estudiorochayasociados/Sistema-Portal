@@ -2,7 +2,7 @@
 require_once "Config/Autoload.php";
 Config\Autoload::runSitio();
 $funciones = new Clases\PublicFunction();
-if($_SESSION["usuario"] != 2){
+if ($_SESSION["usuario"] != 2) {
     $funciones->headerMove('index.php');
 }
 ?>
@@ -31,6 +31,8 @@ if($_SESSION["usuario"] != 2){
                 <div class="card-body">
                     <div id="historial"></div>
                     <input class="form-control" type="hidden" id="txtId" name="txtId" value="">
+                    <input class="form-control" type="hidden" id="txtEstadoSMS" name="txtEstadoSMS" value="1">
+                    <input class="form-control" type="hidden" id="txtTelefono" name="txtTelefono" value="">
                     <span>DNI:</span><br>
                     <div id="seccionDniDia" class="row" style="display: none;">
                         <div class="col-md-8">
@@ -42,6 +44,12 @@ if($_SESSION["usuario"] != 2){
                     </div>
                     <div id="seccionDniEvento" style="display: none;">
                         <input class="form-control" type="text" id="txtDni" name="txtDni" placeholder="DNI del cliente" disabled>
+                    </div>
+                    <div id="seccionTramite">
+                        <span>Trámite/es:</span><br>
+                        <select class="form-control" id="txtTramite" name="txtTramite" onchange="cambiarTramite();">
+                            <option selected disabled>Seleccionar trámite</option>
+                        </select>
                     </div>
                     <div id="seccionTitulares">
                         <span>Titular/es:</span><br>
@@ -59,29 +67,43 @@ if($_SESSION["usuario"] != 2){
                         <span>Estado:</span><br>
                         <select class="form-control" id="txtEstado" name="txtEstado">
                             <option selected disabled>Seleccionar estado</option>
-                            <option value="1">Citación previa</option>
-                            <option value="2">Informe pedido</option>
-                            <option value="3">Informe recibido</option>
-                            <option value="4">Escritura firmada</option>
-                            <option value="5">Escritura para retirar inscripta en escribanía</option>
+                            <option value="1">Inicio de trámite</option>
+                            <option value="2">Firma de escritura</option>
+                            <option value="3">Escritura firmada</option>
                         </select>
                     </div>
                     <div id="seccionEstadoEvento">
                         <span>Estado:</span><br>
-                        <input class="form-control" type="text" id="txtEstado" name="txtEstado" disabled>
+                        <select class="form-control" id="txtEstado" name="txtEstado" disabled>
+                        </select>
                     </div>
                     <div id="seccionObservacion">
                         <span>Observación:</span><br>
-                        <textarea class="form-control" id="txtObservacion" name="txtObservacion" disabled>Sin observación</textarea>
+                        <textarea class="form-control" id="txtObservacion" name="txtObservacion">Sin observación</textarea>
                     </div>
-                    <span>Horario:</span><br>
-                    <div class="seccionStart"></div>
-                    <div class="seccionEnd"></div>
+                    <div class="row">
+                        <div class="col-md-6" id="seccionStart">
+                            <span>Desde:</span><br>
+                            <select class="form-control" id="txtStart" name="txtStart">
+                                <option selected disabled>Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="seccionEnd">
+                            <span>Hasta:</span><br>
+                            <select class="form-control" id="txtEnd" name="txtEnd">
+                            </select>
+                        </div>
+                    </div>
                     <div id="confirmar"></div>
                 </div>
                 <div id="agregar" class="card-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" id="btnAgregar">Agregar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnEliminar">Eliminar</button>
+                    <div class="container">
+                        <div class="row">
+                            <button type="button" class="col-md-5 btn btn-success" data-dismiss="modal" id="btnAgregar">Agregar</button>
+                            <button type="button" class="col-md-5 btn btn-danger" data-dismiss="modal" id="btnEliminar">Eliminar</button>
+                            <button type="button" class="col-md-5 ml-1 btn btn-info" data-dismiss="modal" id="btnModificar">Modificar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,7 +120,8 @@ if($_SESSION["usuario"] != 2){
         </div>
     </div>
     <div class="row">
-        <div class="clearfix"></div><br>
+        <div class="clearfix"></div>
+        <br>
         <div class="col-md-12">
             <br><a href="index.php" class="btn btn-info col-sm-12 col-md-2">Cerrar Sesión</a>
         </div>

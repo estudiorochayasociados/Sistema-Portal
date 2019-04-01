@@ -21,9 +21,9 @@ unset($_SESSION["usuario"]);
                     <div class="user_card2 text-center" style="padding:30px 40px">
                         <h5 class="text-uppercase"><b>¡En Portal del Sol escriturar es muy simple!</b></h5>
                         <p class="text-uppercase">
-                            Realizá tu escritura en tan solo 3 pasos<br/>
+                            Realizá tu escritura en tan solo 5 pasos<br/>
                             <span style="font-size:14px;">1) Solicitá tu turno.<br/></span>
-                            <span style="font-size:14px;">2) Asistir a escribanía con documentación requerida.<br/></span>
+                            <span style="font-size:14px;">2) Asistir a escribanía co documentación requerida.<br/></span>
                             <span style="font-size:14px;">3) Firma de escritura.<br/></span>
                         </p>
                         <h5 class="text-uppercase"><b> ¡Listo...tu escritura ya está lista!</b></h5>
@@ -74,9 +74,14 @@ unset($_SESSION["usuario"]);
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <br>
-                        <span class="alert alert-info">Su turno ya se encuentra tramitando.</span>
+                    <div class="card-body" id="contenido">
+                        <div id="indices">
+                            <div class="d-flex alert" style="display: none;">
+                                <div class="col-md-4"><b>Motivo</b></div>
+                                <div class="col-md-4 text-center"><b>Observación</b></div>
+                                <div class="col-md-4 text-right"><b>Fecha</b></div>
+                            </div>
+                        </div>
                     </div>
                     <a href="clientes.php" class="btn btn-info btn-block mt-4 mb-4">Cerrar Sesión</a>
                 </div>
